@@ -34,34 +34,27 @@ fs.readFile('inputs/day1.txt', 'utf8', (err, data) => {
   // runs through all the changes until the first repeated frequency is found
   const getFirstRepeatedFrequency = changes => {
     // tracks all the frequencies
-    const frequencies = {};
+    const seen = {};
     let frequency = 0;
-    let changeIndex = 0;
-    let frequencyRepeated = false;
 
     // run until we have a repeated frequency
-    while (!frequencyRepeated) {
-      // adjust the frequency
-      frequency = adjustFrequency(frequency, changes[changeIndex]);
+    while (true) {
+      for (const change of changes) {
+        // adjust the frequency
+        frequency = adjustFrequency(frequency, change);
 
-      if (frequencies[frequency]) {
-        // repeated frequency found
-        frequencyRepeated = true;
-      } else {
-        frequencies[frequency] = 1;
-        changeIndex++;
-        // reset to the start
-        if (changeIndex === changes.length) {
-          changeIndex = 0;
+        if (seen[frequency]) {
+          return frequency;
         }
+
+        seen[frequency] = true;
       }
     }
-
-    return frequency;
   };
 
   // PART 1 Solution - 569 for me
   console.log(getFrequency(input));
+  // simpler solution using Number - input.reduce((acc, change) => acc + Number(change), 0); d'OH
 
   // PART 2 Solution - 77666 for me
   console.log(getFirstRepeatedFrequency(input));
