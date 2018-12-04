@@ -23,6 +23,16 @@ fs.readFile('inputs/day4.txt', 'utf8', (err, data) => {
     const guardsSleepTracker = {};
     // tracks guards minute popularity for sleeping
     const minuteTracker = {};
+    // logs minute tracking
+    const logMinutes = (guard, slept, woke) => {
+      for (let i = slept; i < woke; i++) {
+        if (!minuteTracker[guard][i]) {
+          minuteTracker[guard][i] = 1;
+        } else {
+          minuteTracker[guard][i] += 1;
+        }
+      }
+    };
 
     let currentGuard;
     let lastSlept;
@@ -48,21 +58,17 @@ fs.readFile('inputs/day4.txt', 'utf8', (err, data) => {
             .pop()
         );
 
+        // set when the guard started sleeping
         if (description.includes('falls asleep')) {
           lastSlept = min;
         }
 
+        // get the total time slept
         if (description.includes('wakes up')) {
           // add to the total mins slept
           guardsSleepTracker[currentGuard] += min - lastSlept;
           // keeps track of what minutes each guard sleeps on the most
-          for (let i = lastSlept; i < min; i++) {
-            if (!minuteTracker[currentGuard][i]) {
-              minuteTracker[currentGuard][i] = 1;
-            } else {
-              minuteTracker[currentGuard][i] += 1;
-            }
-          }
+          logMinutes(currentGuard, lastSlept, min);
         }
       }
     }
@@ -89,7 +95,6 @@ fs.readFile('inputs/day4.txt', 'utf8', (err, data) => {
       }
     }
 
-    console.log(sleepiestMin, sleepiestMinGuard);
     return {
       sleepiestGuard,
       sleepiestGuardMin,
