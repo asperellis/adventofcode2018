@@ -18,7 +18,7 @@ fs.readFile('inputs/day4.txt', 'utf8', (err, data) => {
   const getLargestValue = obj =>
     Object.keys(obj).reduce((a, b) => (obj[a] > obj[b] ? a : b));
 
-  const guardSleepData = records => {
+  const getGuardSleepData = records => {
     // data of all the guards and their total mins slept on the job
     const guardsSleepTracker = {};
     // tracks guards minute popularity for sleeping
@@ -101,11 +101,11 @@ fs.readFile('inputs/day4.txt', 'utf8', (err, data) => {
   };
 
   // guard sleep data processed - returns sleepiest guard and his/her fav min + table of min slept freq for part 2
-  const sleepData = guardSleepData(input);
+  const guardSleepData = getGuardSleepData(input);
 
   // PART 1 - Get the guard that sleeps the most
-  console.log(sleepData.sleepiestGuard * sleepData.sleepiestGuardMin);
+  console.log(guardSleepData.sleepiestGuard * guardSleepData.sleepiestGuardMin);
 
   // PART 2 - Which guard slept the most on a single minute
-  console.log(sleepData.sleepiestMin * sleepData.sleepiestMinGuard);
+  console.log(guardSleepData.sleepiestMin * guardSleepData.sleepiestMinGuard);
 });
