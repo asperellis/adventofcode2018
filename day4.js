@@ -36,8 +36,6 @@ fs.readFile('inputs/day4.txt', 'utf8', (err, data) => {
         // for tracking mins slept we need to setup the guard in the tracker
         if (!guardsSleepTracker[currentGuard]) {
           guardsSleepTracker[currentGuard] = 0;
-        }
-        if (!minuteTracker[currentGuard]) {
           minuteTracker[currentGuard] = {};
         }
       } else {
