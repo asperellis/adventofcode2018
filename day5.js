@@ -1,6 +1,6 @@
-const fs = require('fs');
+const readInput = require('./utils/readInput');
 
-fs.readFile('inputs/day5.txt', 'utf8', (err, data) => {
+readInput(5, data => {
   const input = data.trim();
 
   // removes any polar opposite chars (aA|Aa) from a string input

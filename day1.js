@@ -1,6 +1,6 @@
-const fs = require('fs');
+const readInput = require('./utils/readInput');
 
-fs.readFile('inputs/day1.txt', 'utf8', (err, data) => {
+readInput(1, data => {
   // puzzle input. array of strings with +/- and a numeric value
   const input = data.trim().split('\n');
 

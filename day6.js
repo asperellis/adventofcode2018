@@ -1,6 +1,6 @@
-const fs = require('fs');
+const readInput = require('./utils/readInput');
 
-fs.readFile('inputs/day6.txt', 'utf8', (err, data) => {
+readInput(6, data => {
   // puzzle input. array of strings with +/- and a numeric value
   const input = data
     .trim()
@@ -71,7 +71,7 @@ fs.readFile('inputs/day6.txt', 'utf8', (err, data) => {
         }
 
         // if theres only one point thats closest then count it
-        if (onlyOneClosestPoint) {
+        if (closestPoint.split(':').length === 1) {
           areas[closestPoint] += 1;
         }
       }

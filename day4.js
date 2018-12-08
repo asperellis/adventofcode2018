@@ -1,7 +1,7 @@
-const fs = require('fs');
 const moment = require('moment');
+const readInput = require('./utils/readInput');
 
-fs.readFile('inputs/day4.txt', 'utf8', (err, data) => {
+readInput(4, data => {
   // input - date time of guards working and their sleep schedule - sorted by date
   const input = data
     .trim()

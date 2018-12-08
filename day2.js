@@ -1,6 +1,6 @@
-const fs = require('fs');
+const readInput = require('./utils/readInput');
 
-fs.readFile('inputs/day2.txt', 'utf8', (err, data) => {
+readInput(2, data => {
   // puzzle input. array of strings with +/- and a numeric value
   const input = data.trim().split('\n');
 
@@ -56,7 +56,7 @@ fs.readFile('inputs/day2.txt', 'utf8', (err, data) => {
           }
         }
         if (diffs === 2) {
-          console.log([map1, map2]);
+          // console.log([map1, map2]);
         }
       }
     }
@@ -70,12 +70,12 @@ fs.readFile('inputs/day2.txt', 'utf8', (err, data) => {
     for (let j = i + 1; j < arr.length; j++) {
       const charsI = [...arr[i]];
       const charsJ = [...arr[j]];
-      console.log(charsI, charsJ);
+      // console.log(charsI, charsJ);
       let diff = charsI.reduce((a, c, i) => a + (c === charsJ[i] ? 0 : 1), 0);
 
       if (diff === 1) {
-        console.log(arr[i]);
-        console.log(arr[j]);
+        // console.log(arr[i]);
+        // console.log(arr[j]);
       }
     }
   }

@@ -1,6 +1,6 @@
-const fs = require('fs');
+const readInput = require('./utils/readInput');
 
-fs.readFile('inputs/day3.txt', 'utf8', (err, data) => {
+readInput(3, data => {
   // puzzle input. array of strings with rect sizes and dist from left and right edges ie
   // #1 @ 236,827: 24x17 => [id, @, xy, wh]
   const input = data
