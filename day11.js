@@ -5,52 +5,62 @@ readInput(11, data => {
   const gridSerialNumber = Number(data);
 
   const getLargestPowerGrid = (gridSize, sectionSize, serialNumber) => {
-    const powerLevels = {};
+    let maxPowerLevel = 0;
+    let maxPowerLevelCoord = '';
 
-    const calcPowerLevel = (x, y, serial, size) => {
+    const calcPowerLevel = (x, y, serial, size, log) => {
       let sectionPowerLevel = 0;
 
-      const coordPowerLevel = (z, k, s) => {
+      const coordPowerLevel = (k, z, s) => {
         // Find the fuel cell's rack ID, which is its X coordinate plus 10.
-        const rackId = z + 10;
+        const rackId = k + 10;
         // Begin with a power level of the rack ID times the Y coordinate.
-        let powerLevel = rackId * k;
+        let powerLevel = rackId * z;
         // Increase the power level by the value of the grid serial number (your puzzle input).
         powerLevel += s;
         // Set the power level to itself multiplied by the rack ID.
         powerLevel *= rackId;
         // Keep only the hundreds digit of the power level (so 12345 becomes 3; numbers with no hundreds digit become 0).
-        powerLevel = powerLevel.toString().slice(2, 3) || 0;
+        powerLevel =
+          String(powerLevel).slice(-3).length > 2
+            ? Number(String(powerLevel).slice(-3)[0])
+            : 0;
         // Subtract 5 from the power level.
-        powerLevel = Number(powerLevel) - 5;
+        powerLevel -= 5;
 
         return powerLevel;
       };
 
-      for (let k = y; k < y + size; k++) {
-        for (let z = x; z < x + size; z++) {
+      for (let k = x; k < x + size; k++) {
+        for (let z = y; z < y + size; z++) {
           sectionPowerLevel += coordPowerLevel(k, z, serial);
         }
       }
+
       return sectionPowerLevel;
     };
 
-    for (let y = 1; y < gridSize - sectionSize; y += sectionSize) {
-      for (let x = 1; x < gridSize - sectionSize; x += sectionSize) {
-        powerLevels[`${x},${y}`] = calcPowerLevel(
+    for (let x = 1; x < gridSize - sectionSize; x += sectionSize) {
+      for (let y = 1; y < gridSize - sectionSize; y += sectionSize) {
+        const sectionPowerLevel = calcPowerLevel(
           x,
           y,
           serialNumber,
           sectionSize
         );
+
+        if (sectionPowerLevel > maxPowerLevel) {
+          maxPowerLevel = sectionPowerLevel;
+          maxPowerLevelCoord = `${x},${y}`;
+        }
       }
     }
 
-    return Object.keys(powerLevels).reduce((a, b) =>
-      powerLevels[a] > powerLevels[b] ? a : b
-    );
+    // testing console.log(calcPowerLevel(217, 196, 39, 3, true));
+
+    return `${sectionSize}x${sectionSize} Section at ${maxPowerLevelCoord} has max power level of ${maxPowerLevel}`;
   };
 
   // PART 1
-  console.log(getLargestPowerGrid(300, 3, gridSerialNumber));
+  console.log(getLargestPowerGrid(300, 3, 42));
 });
