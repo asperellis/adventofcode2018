@@ -1,6 +1,6 @@
-const fs = require('fs');
+const readInput = require('./utils/readInput');
 
-fs.readFile('inputs/day7.txt', 'utf8', (err, data) => {
+readInput(7, data => {
   // puzzle input. set of instruction steps
   const input = data
     .trim()
