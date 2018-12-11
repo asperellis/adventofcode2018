@@ -51,5 +51,6 @@ readInput(11, data => {
     );
   };
 
+  // PART 1
   console.log(getLargestPowerGrid(300, 3, gridSerialNumber));
 });
