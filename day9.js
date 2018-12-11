@@ -12,7 +12,7 @@ readInput(9, data => {
     let marbleEnteringCircle = 1;
     const scores = {};
     let currentMarble = 0;
-    let currentMarbleLocation = marbleCircle.indexOf(currentMarble);
+    let currentMarbleLocation = 0;
     let currentPlayer = 1;
 
     while (marbleEnteringCircle < marbleCount) {
