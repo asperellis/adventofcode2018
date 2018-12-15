@@ -8,7 +8,7 @@ readInput(11, data => {
     let maxPowerLevel = 0;
     let maxPowerLevelCoord = '';
 
-    const calcPowerLevel = (x, y, serial, size, log) => {
+    const calcPowerLevel = (x, y, serial, size) => {
       let sectionPowerLevel = 0;
 
       const coordPowerLevel = (k, z, s) => {
