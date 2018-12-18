@@ -63,11 +63,13 @@ readInput(13, data => {
     carts.forEach(cart => {
       // they are in a current location
       const location = track[cart.location[1]][cart.location[0]];
-      // types = -| \/ +
-      switch(location) {
+      // types of track = -| \/ +
+      switch (
+        location
         // - | then move dir of cart
         // \/ rotate the cart and then move the cart
         // + rotate the cart based on cart.turning and then move the cart
+      ) {
       }
     });
 
