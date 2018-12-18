@@ -2,6 +2,8 @@ const readInput = require('./utils/readInput');
 
 readInput(16, data => {
   const input = data.trim().split('-');
+
+  // sample before and after with program lines
   const samples = input[0]
     .trim()
     .split('\r\n\r\n')
@@ -16,11 +18,13 @@ readInput(16, data => {
       )
     );
 
+  // the program steps
   const program = input[1]
     .trim()
     .split('\n')
     .map(line => line.split(' ').map(Number));
 
+  // checks if a sample meets the condition of an operation
   const OPP_CHECKS = {
     // addr (add register) stores into register C the result of adding register A and register B.
     addr: (before, after, aVal, bVal, cVal) =>
@@ -98,6 +102,7 @@ readInput(16, data => {
     }
   };
 
+  // performs the operations
   const OPPS = {
     // addr (add register) stores into register C the result of adding register A and register B.
     addr: (aVal, bVal, registers) => registers[aVal] + registers[bVal],
@@ -135,6 +140,7 @@ readInput(16, data => {
       registers[aVal] === registers[bVal] ? 1 : 0
   };
 
+  // maps opp codes to their names
   const OPP_CODES = {
     '0': 'eqri',
     '1': 'mulr',
@@ -154,13 +160,16 @@ readInput(16, data => {
     '15': 'eqrr'
   };
 
+  // checks samples that meet the min match reqs of operations
   const checkSamples = (samples, oppCodeMinMatch) => {
+    // checks if a sample matches a min number of opps
     const check = sample => {
       const [before, rule, after] = sample;
       const [oppCode, aVal, bVal, cVal] = rule;
       let matches = 0;
       const codes = {};
 
+      // checks each opp condition for a match
       for (const oc in OPP_CHECKS) {
         if (OPP_CHECKS[oc](before, after, aVal, bVal, cVal) && !codes[oc]) {
           matches++;
@@ -168,13 +177,15 @@ readInput(16, data => {
         }
       }
 
-      // used to guesstimate opp codes
+      // used to guesstimate opp codes - TODO: programatically do this. not sure how right now
       const isCodeSet = code =>
         Object.keys(OPP_CODES).filter(k => OPP_CODES[k] === code).length === 1;
 
+      // only one so we can match the oppcode with its name
       if (Object.keys(codes).length === 1) {
         OPP_CODES[oppCode] = Object.keys(codes).pop();
       } else {
+        // lists out the possibilities for each code
         for (const code in codes) {
           if (!OPP_CODES[oppCode]) {
             OPP_CODES[oppCode] = '';
@@ -189,16 +200,21 @@ readInput(16, data => {
       return matches >= oppCodeMinMatch;
     };
 
+    // only return the amount of samples that meet the min match given
     return samples.filter(check).length;
   };
 
+  // executes a program based on the opps
   const runProgram = program => {
+    // registers are always 4 and start at 0
     const registers = [0, 0, 0, 0];
+    // run each line of the program
     program.forEach(line => {
       const [oppCode, aVal, bVal, cVal] = line;
       registers[cVal] = OPPS[OPP_CODES[oppCode]](aVal, bVal, registers);
     });
 
+    // return the first index per rules
     return registers[0];
   };
 
