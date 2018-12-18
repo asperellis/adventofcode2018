@@ -30,33 +30,29 @@ readInput(2, data => {
     return counts;
   };
 
-  const charCounts = input
-    .map(mapChars)
-    .reduce(hasTwoOrThreeSimilarChars, { twos: 0, threes: 0 });
-
-  // PART 1 Solution
-  console.log(charCounts.twos * charCounts.threes);
-
+  // finds 2 similar ids that are only one char different in the same location
   const findSimilar = ids => {
-    const queue = ids.map(mapChars);
+    let diffLocation = 0;
 
-    while (queue.length) {
-      const map1 = queue.shift();
-      for (let i = 0; i < queue.length; i++) {
-        let diffs = 0;
-        const map2 = queue[i];
+    for (let i = 0; i < ids.length; i++) {
+      for (let j = i + 1; j < ids.length; j++) {
+        const charsI = [...ids[i]];
+        const charsJ = [...ids[j]];
 
-        for (const char in map1) {
-          diffs += Math.abs(map1[char] - (map2[char] || 0));
-        }
-
-        for (const char in map2) {
-          if (!map1[char]) {
-            diffs += map2[char];
+        let diff = charsI.reduce((a, c, i) => {
+          if (c === charsJ[i]) {
+            return a;
           }
-        }
-        if (diffs === 2) {
-          // console.log([map1, map2]);
+          diffLocation = i;
+          return a + 1;
+        }, 0);
+
+        if (diff === 1) {
+          // send back shared chars of similars
+          return (
+            ids[i].slice(0, diffLocation) +
+            ids[i].slice(diffLocation + 1, ids[i].length)
+          );
         }
       }
     }
@@ -64,19 +60,13 @@ readInput(2, data => {
     return 'no diffs';
   };
 
-  //console.log(findSimilar(input));
-  let arr = input;
-  for (let i = 0; i < arr.length; i++) {
-    for (let j = i + 1; j < arr.length; j++) {
-      const charsI = [...arr[i]];
-      const charsJ = [...arr[j]];
-      // console.log(charsI, charsJ);
-      let diff = charsI.reduce((a, c, i) => a + (c === charsJ[i] ? 0 : 1), 0);
+  const charCounts = input
+    .map(mapChars)
+    .reduce(hasTwoOrThreeSimilarChars, { twos: 0, threes: 0 });
 
-      if (diff === 1) {
-        // console.log(arr[i]);
-        // console.log(arr[j]);
-      }
-    }
-  }
+  // PART 1
+  console.log(charCounts.twos * charCounts.threes);
+
+  // PART 2
+  console.log(findSimilar(input));
 });
