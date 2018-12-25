@@ -12,7 +12,7 @@ readInput(7, data => {
         .split(' must be finished before step ')
     );
 
-  const buildSleigh = (steps, workers = 1) => {
+  const buildSleigh = steps => {
     // breaking start and finished into two arrays to search for roots
     const stepsBrokenApart = steps.reduce(
       (steps, r) => [[...steps[0], r[0]], [...steps[1], r[1]]],
@@ -26,13 +26,11 @@ readInput(7, data => {
         .filter(step => !stepsBrokenApart[0].includes(step))
     );
 
-    // time to execute a step
     const timeForStep = char => 60 + char.charCodeAt() - 64;
 
     let stepsRemaining = [...steps];
     let stepsInOrder = '';
     let stepsToRun = [];
-    let buildTime = 0;
 
     // start with the roots
     roots.forEach(r => stepsToRun.push(r));
@@ -58,21 +56,17 @@ readInput(7, data => {
 
       // add the next steps if any
       if (nextSteps.length > 0) {
+        stepsInOrder += ':';
         stepsToRun = [...stepsToRun, ...nextSteps].sort();
       }
-
-      // build time
-      buildTime += timeForStep(step);
     }
 
-    return `Built in order ${stepsInOrder} in ${buildTime}s with ${workers} worker${
-      workers > 1 ? 's' : ''
-    }`;
+    return stepsInOrder;
   };
 
   // PART 1
-  console.log(buildSleigh(input));
+  console.log(buildSleigh(input).replace(/:/g, ''));
 
   // PART 2
-  console.log(buildSleigh(input, 5));
+  // console.log(getBuildTime(buildSleigh(input), 5));
 });
